@@ -2,4 +2,15 @@
 
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../CSS/RouletteGame.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RouletteController" />
+
+<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../CSS/RouletteGame.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RouletteController" >
+    <Label layoutX="20" layoutY="10" fx:id="user_name"></Label>
+    <Label layoutX="20" layoutY="25" fx:id="user_balance"></Label>
+    <Label layoutX="20" layoutY="50" fx:id="message"></Label>
+    <JFXTextField layoutX="20" layoutY="60" fx:id="bet_amount"></JFXTextField>
+    <JFXButton layoutX="20" layoutY="90" fx:id="lock_in">Lock In</JFXButton>
+    <JFXButton layoutX="100" layoutY="90" fx:id="clear">Clear</JFXButton>
+</Pane>
