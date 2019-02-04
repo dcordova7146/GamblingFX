@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.layout.StackPane?>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../CSS/RouletteGame.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RouletteController">
+    <Label fx:id="user_name" layoutX="20" layoutY="10" />
+    <Label fx:id="user_balance" layoutX="20" layoutY="25" />
 
-<?import javafx.scene.control.Label?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXButton?>
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../CSS/RouletteGame.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RouletteController" >
-    <Label layoutX="20" layoutY="10" fx:id="user_name"></Label>
-    <Label layoutX="20" layoutY="25" fx:id="user_balance"></Label>
-    <Label layoutX="20" layoutY="50" fx:id="message"></Label>
-    <JFXTextField layoutX="20" layoutY="60" fx:id="bet_amount"></JFXTextField>
-    <JFXButton layoutX="20" layoutY="90" fx:id="lock_in">Lock In</JFXButton>
-    <JFXButton layoutX="100" layoutY="90" fx:id="clear">Clear</JFXButton>
+    <Label fx:id="message1" layoutX="20" layoutY="50" />
+    <JFXTextField fx:id="bet_amount" layoutX="20" layoutY="60" />
+    <JFXButton fx:id="lock_in" layoutX="20" layoutY="90.0">Lock In</JFXButton>
+    <JFXButton fx:id="clear" layoutX="100" layoutY="90">Clear</JFXButton>
+
+    <Label fx:id="message2" layoutX="20.0" layoutY="147.0"/>
+    <Label fx:id="message3" layoutX="20.0" layoutY="160.0"/>
+   <JFXButton fx:id="red" layoutX="20.0" layoutY="180.0" prefHeight="40.0" prefWidth="50.0" text="Red" onAction="#red"/>
+   <JFXButton fx:id="black" layoutX="100.0" layoutY="180.0" prefHeight="40.0" prefWidth="50.0" text="Black" onAction="#black"/>
+   <JFXButton fx:id="green" layoutX="180.0" layoutY="180.0" prefHeight="40.0" prefWidth="50.0" text="Green" onAction="#green"/>
+
+    <StackPane fx:id="stackPane" layoutX="139.0" layoutY="425.0" prefHeight="50.0" prefWidth="200.0" />
 </Pane>
