@@ -16,6 +16,7 @@ public class Roulette extends GamblingGame {
     private int greenPot = 0;
 
 
-
-
+    public void placeBet(int bet, User currUser, ){
+        currentPlayerBets.replace(currUser, bet);
+    }
 }
