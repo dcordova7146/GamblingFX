@@ -51,7 +51,7 @@ public class RouletteController {
     }
 
     /**
-     * Makes sure the betting amount entered is a hole number that is less than 1,000,000,000.
+     * Makes sure the betting amount entered is a whole number that is less than 1,000,000,000.
      * @return True if it meets the requirements, false otherwise.
      */
     private boolean validateAmount() {
