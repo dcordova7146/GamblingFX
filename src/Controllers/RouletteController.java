@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
+import javax.swing.*;
+
 public class RouletteController {
     public Pane pane;
     public Label user_name;
@@ -23,9 +25,14 @@ public class RouletteController {
     public JFXButton black;
     public JFXButton green;
 
+    public Label message4;
     public StackPane stackPane;
 
     public int multiplier;
+    public int bet;
+    public int potential;
+
+    public JFXButton play;
 
     public void initialize(){
         user_name.setText("Welcome, " + LoginController.currentUser.getFirstName() + ".");
@@ -38,16 +45,46 @@ public class RouletteController {
     public void red(ActionEvent actionEvent){
         multiplier = 2;
         message3.setText("You have selected red. The multiplier is " + multiplier + ".");
+        updatePotential();
     }
 
     public void black(ActionEvent actionEvent){
         multiplier = 2;
         message3.setText("You have selected black. The multiplier is " + multiplier + ".");
+        updatePotential();
     }
 
     public void green(ActionEvent actionEvent){
         multiplier = 14;
         message3.setText("You have selected green. The multiplier is " + multiplier + ".");
+        updatePotential();
+    }
+
+    public void lock(ActionEvent actionEvent){
+        if(validateAmount()){
+            bet = Integer.parseInt(bet_amount.getText());
+            stackPane.getChildren().clear();
+            message1.setText("You have locked in " + bet + " coin(s).");
+            updatePotential();
+        } else {
+            this.displayAlert();
+        }
+    }
+
+    public void clear(ActionEvent actionEvent){
+        bet_amount.clear();
+    }
+
+    public void updatePotential(){
+        if(multiplier!=0&&bet!=0){
+            potential = bet * multiplier;
+            message4.setText("You can potentially win " + potential + " coin(s).");
+            play.setVisible(true);
+        }
+    }
+
+    public void play(){
+        play.setVisible(false);
     }
 
     /**
