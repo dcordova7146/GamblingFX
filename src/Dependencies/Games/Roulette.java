@@ -3,7 +3,6 @@ package Dependencies.Games;
 import Dependencies.Systems.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Roulette game
@@ -19,33 +18,21 @@ public class Roulette extends GamblingGame {
         userManager.updatePlayerBalance(player, -(betAmount));
     }
 
-    public String[] generateWheel(){
-        String[] wheel = new String[15];
-        wheel[0] = "green";
-        for(int i = 1;i<wheel.length;i++){
+    public static ArrayList<String> generateWheel(){
+        ArrayList<String> wheel = new ArrayList<>();
+        wheel.add("green");
+        for(int i = 1;i<16;i++){
             if(i >8) {
-                wheel[i] = "black";
+                wheel.add("black");
             }else {
-                wheel[i] = "red";
+                wheel.add("red");
             }
         }
         return wheel;
     }
 
-    public String calculateResult(){
-
-        if(((int)Math.random() *100) <= 55){
-            return "black";
-        }else if(((int)Math.random() *100) <= 99){
-            return "red";
-        }else
-            return "green";
-
-    }
-
-    public void updateWinnerBalance(String winningColor,User player, int winAMount){
+    public void updateWinnerBalance(User player, int winAMount){
             userManager.updatePlayerBalance(player, winAMount);
-
     }
 
 

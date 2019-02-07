@@ -1,14 +1,20 @@
 package Controllers;
 
+import Dependencies.Games.Roulette;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class RouletteController {
     public Pane pane;
@@ -28,11 +34,25 @@ public class RouletteController {
     public Label message4;
     public StackPane stackPane;
 
+    public String color;
+
     public int multiplier;
     public int bet;
     public int potential;
 
     public JFXButton play;
+
+    public Rectangle box1;
+    public Rectangle box2;
+    public Rectangle box3;
+    public Rectangle box4;
+    public Rectangle box5;
+    public Rectangle box6;
+
+    public ArrayList<Rectangle> boxes = new ArrayList<>();
+    int boxIndex;
+    int wheelIndex;
+    int tick;
 
     public void initialize(){
         user_name.setText("Welcome, " + LoginController.currentUser.getFirstName() + ".");
@@ -40,21 +60,35 @@ public class RouletteController {
         message1.setText("How much would you like to bet?");
 
         message2.setText("Please choose a color.");
+
+        boxes.add(box1);
+        boxes.add(box2);
+        boxes.add(box3);
+        boxes.add(box4);
+        boxes.add(box5);
+        boxes.add(box6);
+
+        for(int i=0;i<boxes.size();i++){
+            boxes.get(i).setVisible(false);
+        }
     }
 
     public void red(ActionEvent actionEvent){
+        color = "red";
         multiplier = 2;
         message3.setText("You have selected red. The multiplier is " + multiplier + ".");
         updatePotential();
     }
 
     public void black(ActionEvent actionEvent){
+        color = "black";
         multiplier = 2;
         message3.setText("You have selected black. The multiplier is " + multiplier + ".");
         updatePotential();
     }
 
     public void green(ActionEvent actionEvent){
+        color = "green";
         multiplier = 14;
         message3.setText("You have selected green. The multiplier is " + multiplier + ".");
         updatePotential();
@@ -85,27 +119,108 @@ public class RouletteController {
 
     public void play(){
         play.setVisible(false);
+        lock_in.setVisible(false);
+        clear.setVisible(false);
+        black.setVisible(false);
+        red.setVisible(false);
+        green.setVisible(false);
+        bet_amount.setVisible(false);
+  //      Roulette.placeBet(bet,LoginController.currentUser);
+        runGame();
     }
 
+    public void runGame(){
+        ArrayList<String> wheel = Roulette.generateWheel();
+        Collections.shuffle(wheel);
+        tick = (int)(Math.random()*101);
+        boxIndex = 0;
+        wheelIndex = 0;
+
+        for(int i=0;i<6;i++){
+            if(wheel.get(i).equals("black")) {
+                boxes.get(boxIndex).setFill(Color.BLACK);
+            } else if (wheel.get(i).equals("red")){
+                boxes.get(boxIndex).setFill(Color.RED);
+            } else {
+                boxes.get(boxIndex).setFill(Color.GREEN);
+            }
+            boxIndex++;
+        }
+
+        for(int i=0;i<boxes.size();i++){
+            boxes.get(i).setVisible(true);
+        }
+
+        boxIndex = 0;
+
+        AnimationTimer game = new AnimationTimer() {
+
+            public void handle(long now) {
+                if(wheel.get(wheelIndex).equals("black")) {
+                    boxes.get(boxIndex).setFill(Color.BLACK);
+                } else if (wheel.get(wheelIndex).equals("red")){
+                    boxes.get(boxIndex).setFill(Color.RED);
+                } else {
+                    boxes.get(boxIndex).setFill(Color.GREEN);
+                }
+                tick++;
+
+                if(tick==200){
+                    checkResult(wheel.get(wheelIndex));
+                    this.stop();
+                }
+
+                boxIndex++;
+                if(boxIndex>5){
+                    boxIndex = 0;
+                }
+
+                wheelIndex++;
+                if(wheelIndex>14){
+                    wheelIndex = 0;
+                }
+            }
+        };
+        game.start();
+    }
+
+    public void checkResult(String color){
+        play.setVisible(true);
+        lock_in.setVisible(true);
+        clear.setVisible(true);
+        black.setVisible(true);
+        red.setVisible(true);
+        green.setVisible(true);
+        bet_amount.setVisible(true);
+
+        String text = "It landed on " + color;
+        if (this.color.equals(color)){
+   //         Roulette.updateWinnerBalance(LoginController.currentUser, potential);
+            text += ". You won " + potential + " coin(s).";
+        } else {
+            text += ". You lost " + bet + " coin(s).";
+        }
+        message4.setText(text);
+    }
     /**
      * Makes sure the betting amount entered is a whole number that is less than 1,000,000,000.
      * @return True if it meets the requirements, false otherwise.
      */
     private boolean validateAmount() {
-        return (bet_amount.getText().matches("[0-9]") && bet_amount.getText().length() < 10);
+        return (bet_amount.getText().length() < 10 && bet_amount.getText().length() > 0 && Integer.parseInt(bet_amount.getText())<=LoginController.currentUser.getBalance());
     }
 
     /**
      * Displays alerts based on the user error.
      */
     private void displayAlert() {
-        if (bet_amount.getText().matches("[^0-9]")) {
+        if (Integer.parseInt(bet_amount.getText())>LoginController.currentUser.getBalance()) {
             JFXDialog dialog = new JFXDialog();
-            dialog.setContent(new Label("Bets can be whole numbers only!"));
+            dialog.setContent(new Label("Insufficient funds!"));
             dialog.show(stackPane);
         } else if (bet_amount.getText().length() > 10) {
             JFXDialog dialog = new JFXDialog();
-            dialog.setContent(new Label("Cannot place a bet over 1,000,000,000!"));
+            dialog.setContent(new Label("Please place a bet over from 0 to 1,000,000,000!"));
             dialog.show(stackPane);
         }
     }
