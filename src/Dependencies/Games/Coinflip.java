@@ -1,26 +1,48 @@
 package Dependencies.Games;
 
-public class Coinflip {
+import Controllers.LoginController;
+import Dependencies.Systems.User;
 
-/**
- * To be coded later.
-    public boolean bet(int b, ActionEvent choice)
+import java.awt.event.ActionEvent;
+
+public class Coinflip extends GamblingGame{
+
+    public boolean heads = false;
+    //red = head = true
+    //black = tails =false
+    private double greenPos = 0;
+
+    public double bet(int b,User u)
     {
-        return true;
-    }
- **/
-    public boolean roll(boolean head)
-    {
-        double roll = Math.random();
-        if(head && roll>.5)
+        double rotateAmnt = 360*Math.random();
+        userManager.updatePlayerBalance(u,u.getBalance() + -b);
+        greenPos += rotateAmnt;
+        if(greenPos >360)
         {
-            return true;
+            greenPos -=360;
         }
-        if(!head && roll<.5)
+        if(heads && greenPos>180)
         {
-            return true;
+            userManager.updatePlayerBalance(u,u.getBalance() + 2*b);
+            System.out.println("You won " + 2*b);
         }
-        return false;
+        else if(!heads && greenPos<=180)
+        {
+            userManager.updatePlayerBalance(u,u.getBalance() + 2*b);
+            System.out.println("You won " + 2*b);
+        }
+        else{
+            System.out.println("You lose " + b);
+        }
+        return rotateAmnt;
     }
 
+    public double getGreenPos()
+    {
+        return greenPos;
+    }
+    public void setGreenPos(double x)
+    {
+        greenPos = x;
+    }
 }
