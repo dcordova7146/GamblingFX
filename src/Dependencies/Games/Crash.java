@@ -24,7 +24,7 @@ public class Crash extends GamblingGame {
      * Main Constructor.
      */
     public Crash() {
-        this.currentMultiplier = 0;
+        this.currentMultiplier = 1.00;
         this.bustingMultiplier = generateRandomMultiplier();
         this.currentPlayerMultipliers = generateInitialPlayerMap(userManager.getCurrentActiveUsers());
         this.currentPlayerBets = generateInitialBetMap(userManager.getCurrentActiveUsers());
@@ -37,7 +37,7 @@ public class Crash extends GamblingGame {
      */
     public Crash(User user) {
         this.addCurrentPlayer(user);
-        this.currentMultiplier = 0;
+        this.currentMultiplier = 1.00;
         this.bustingMultiplier = generateRandomMultiplier();
         this.currentPlayerMultipliers = generateInitialPlayerMap(userManager.getCurrentActiveUsers());
         this.currentPlayerBets = generateInitialBetMap(userManager.getCurrentActiveUsers());
@@ -56,12 +56,24 @@ public class Crash extends GamblingGame {
     public Double getPlayerMultiplier(User user) { return this.currentPlayerMultipliers.get(user); }
 
     /**
-     * @return Random Double between 0 - 10,000.
+     * THE MOST COMPLEX ALGORITHM IN THE WORLD FOR GENERATING THE BUSTING MULTIPLIER. :P
+     * This is essentially random inception.
+     * @return A random value between 0 - 1000.
      */
     private double generateRandomMultiplier() {
-        double randomChance = (Math.random() * 0.1);
-        System.out.println(randomChance);
-        return (Math.random() * 1000) * randomChance;
+        double oneMultiplierBustChance = Math.random() * 1;
+        if (oneMultiplierBustChance < 0.02) {
+            return 1.00;
+        } else {
+            double randomChance = Math.random() * 1;
+            double bias = 1.00;
+            if (randomChance <= 0.95) {
+                bias = Math.random() * 0.05;
+            }
+            double range = Math.random() * 1000;
+            double returnDouble = ((Math.random() * range) * bias);
+            return returnDouble;
+        }
     }
 
     /**
@@ -131,6 +143,9 @@ public class Crash extends GamblingGame {
      */
     public void toggleGame() { this.gameRunning = !this.gameRunning; }
 
+    /**
+     * Updates each Player's (User's) balance if they have won the game.
+     */
     public void updatePlayersBalance() {
         for (User user : currentPlayerBets.keySet()) {
             if (userManager.getStatusOfUser(user).equals("Won")) {
@@ -139,6 +154,9 @@ public class Crash extends GamblingGame {
         }
     }
 
+    /**
+     * If the game ended and the users have not withdrawn their bet, they have lost the game.
+     */
     public void setLosingPlayers() {
         for (User user : userManager.getStatusOfUsers().keySet()) {
             if (userManager.getStatusOfUser(user).equals("Playing") && !gameRunning) {

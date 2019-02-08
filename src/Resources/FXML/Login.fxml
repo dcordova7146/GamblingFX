@@ -8,10 +8,10 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../CSS/Login.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
    <children>
-      <JFXTextField fx:id="usernameField" layoutX="233.0" layoutY="200.0" promptText="Username" styleClass="username_field" />
-      <JFXPasswordField fx:id="passwordField" layoutX="233.0" layoutY="246.0" promptText="Password" styleClass="password_field" />
-      <JFXButton fx:id="createAccountButton" layoutX="238.0" layoutY="321.0" mnemonicParsing="false" onAction="#allowAccountCreation" styleClass="create_button" text="Create New Account" />
-      <JFXButton layoutX="316.0" layoutY="296.0" mnemonicParsing="false" onAction="#checkLogin" styleClass="login_button" text="Login" />
-      <StackPane fx:id="stackPane" layoutX="66.0" layoutY="361.0" prefHeight="25.0" prefWidth="500.0" />
+      <JFXTextField fx:id="usernameField" layoutX="233.0" layoutY="188.0" promptText="Username" styleClass="username_field" />
+      <JFXPasswordField fx:id="passwordField" layoutX="233.0" layoutY="248.0" promptText="Password" styleClass="password_field" />
+      <JFXButton fx:id="createAccountButton" layoutX="238.0" layoutY="294.0" mnemonicParsing="false" onAction="#allowAccountCreation" styleClass="create_button" text="Create New Account" />
+      <JFXButton layoutX="316.0" layoutY="319.0" mnemonicParsing="false" onAction="#checkLogin" styleClass="login_button" text="Login" />
+      <StackPane fx:id="stackPane" layoutX="50.0" layoutY="362.0" prefHeight="25.0" prefWidth="500.0" />
    </children>
 </Pane>
