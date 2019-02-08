@@ -2,9 +2,10 @@ package Controllers;
 
 import Dependencies.Systems.CSVReader;
 import Dependencies.Systems.User;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +24,7 @@ import java.io.IOException;
 /**
  * Controller for the Login Scene.
  * @Author Afaq Anwar
- * @Version 02/02/19
+ * @Version 02/07/2019
  */
 public class LoginController {
     @FXML private Pane pane;
@@ -30,6 +33,7 @@ public class LoginController {
     @FXML private StackPane stackPane;
     private CSVReader csvReader;
     protected static User currentUser;
+    boolean dialogOpen;
 
     /**
      * Runs on Scene load.
@@ -37,6 +41,7 @@ public class LoginController {
     public void initialize() {
         File protectedData = new File("src/Dependencies/Systems/Data/LoginData.csv");
         csvReader = new CSVReader(protectedData);
+        dialogOpen = false;
     }
 
     /**
@@ -55,14 +60,32 @@ public class LoginController {
                 currentUser = this.buildUser();
                 this.allowEntry();
             } else {
-                JFXDialog dialog = new JFXDialog();
-                dialog.setContent(new Label("Error Incorrect Password!"));
-                dialog.show(stackPane);
+                if (!dialogOpen) {
+                    JFXDialog dialog = new JFXDialog();
+                    dialog.setContent(new Label("Error: Incorrect Password!"));
+                    dialog.show(stackPane);
+                    dialogOpen = true;
+                    PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                    pause.setOnFinished(event -> {
+                        dialog.close();
+                        dialogOpen = false;
+                    });
+                    pause.play();
+                }
             }
         } else {
-            JFXDialog dialog = new JFXDialog();
-            dialog.setContent(new Label("Error Username Does Not Exist!"));
-            dialog.show(stackPane);
+            if (!dialogOpen) {
+                JFXDialog dialog = new JFXDialog();
+                dialog.setContent(new Label("Error: User Does Not Exist!"));
+                dialog.show(stackPane);
+                dialogOpen = true;
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event -> {
+                    dialog.close();
+                    dialogOpen = false;
+                });
+                pause.play();
+            }
         }
     }
 
