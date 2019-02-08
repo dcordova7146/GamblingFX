@@ -14,6 +14,11 @@ import java.util.ArrayList;
 
 public class Roulette extends GamblingGame {
 
+    private User player;
+
+    public Roulette(User user){
+        this.player = user;
+    }
     public void placeBet(int betAmount, User player){
         userManager.updatePlayerBalance(player, -(betAmount));
     }
@@ -22,7 +27,7 @@ public class Roulette extends GamblingGame {
         ArrayList<String> wheel = new ArrayList<>();
         wheel.add("green");
         for(int i = 1;i<16;i++){
-            if(i >8) {
+            if(i%2==0) {
                 wheel.add("black");
             }else {
                 wheel.add("red");

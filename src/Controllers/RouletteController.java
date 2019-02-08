@@ -53,8 +53,11 @@ public class RouletteController {
     int boxIndex;
     int wheelIndex;
     int tick;
+    String box1id;
 
+    private Roulette rgame;
     public void initialize(){
+        rgame = new Roulette(LoginController.currentUser);
         user_name.setText("Welcome, " + LoginController.currentUser.getFirstName() + ".");
         user_balance.setText("You currently have " + LoginController.currentUser.getBalance() + " coin(s).");
         message1.setText("How much would you like to bet?");
@@ -125,26 +128,28 @@ public class RouletteController {
         red.setVisible(false);
         green.setVisible(false);
         bet_amount.setVisible(false);
-  //      Roulette.placeBet(bet,LoginController.currentUser);
+        rgame.placeBet(bet,LoginController.currentUser);
+        user_balance.setText("You currently have " + LoginController.currentUser.getBalance() + " coin(s).");
         runGame();
     }
 
     public void runGame(){
         ArrayList<String> wheel = Roulette.generateWheel();
-        Collections.shuffle(wheel);
         tick = (int)(Math.random()*101);
-        boxIndex = 0;
-        wheelIndex = 0;
+        boxIndex = -1;
+        wheelIndex = -1;
+
 
         for(int i=0;i<6;i++){
-            if(wheel.get(i).equals("black")) {
+            boxIndex++;
+            wheelIndex++;
+            if(wheel.get(wheelIndex).equals("black")) {
                 boxes.get(boxIndex).setFill(Color.BLACK);
-            } else if (wheel.get(i).equals("red")){
+            } else if (wheel.get(wheelIndex).equals("red")){
                 boxes.get(boxIndex).setFill(Color.RED);
             } else {
                 boxes.get(boxIndex).setFill(Color.GREEN);
             }
-            boxIndex++;
         }
 
         for(int i=0;i<boxes.size();i++){
@@ -158,15 +163,24 @@ public class RouletteController {
             public void handle(long now) {
                 if(wheel.get(wheelIndex).equals("black")) {
                     boxes.get(boxIndex).setFill(Color.BLACK);
+                    if(boxIndex==0){
+                        box1id = "black";
+                    }
                 } else if (wheel.get(wheelIndex).equals("red")){
                     boxes.get(boxIndex).setFill(Color.RED);
+                    if(boxIndex==0){
+                        box1id = "black";
+                    }
                 } else {
                     boxes.get(boxIndex).setFill(Color.GREEN);
+                    if(boxIndex==0){
+                        box1id = "black";
+                    }
                 }
                 tick++;
 
                 if(tick==200){
-                    checkResult(wheel.get(wheelIndex));
+                    checkResult(box1id);
                     this.stop();
                 }
 
@@ -193,14 +207,15 @@ public class RouletteController {
         green.setVisible(true);
         bet_amount.setVisible(true);
 
-        String text = "It landed on " + color;
+        String text = "You picked " + this.color +" and it landed on " + color;
         if (this.color.equals(color)){
-   //         Roulette.updateWinnerBalance(LoginController.currentUser, potential);
+            rgame.updateWinnerBalance(LoginController.currentUser, potential);
             text += ". You won " + potential + " coin(s).";
         } else {
             text += ". You lost " + bet + " coin(s).";
         }
         message4.setText(text);
+        user_balance.setText("You currently have " + LoginController.currentUser.getBalance() + " coin(s).");
     }
     /**
      * Makes sure the betting amount entered is a whole number that is less than 1,000,000,000.
