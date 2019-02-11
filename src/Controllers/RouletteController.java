@@ -47,13 +47,15 @@ public class RouletteController {
     public Rectangle box3;
     public Rectangle box4;
     public Rectangle box5;
-    public Rectangle box6;
+    public Rectangle marker;
 
     public ArrayList<Rectangle> boxes = new ArrayList<>();
     int boxIndex;
     int wheelIndex;
     int tick;
     String box1id;
+
+    int delay;
 
     private Roulette rgame;
     public void initialize(){
@@ -69,11 +71,11 @@ public class RouletteController {
         boxes.add(box3);
         boxes.add(box4);
         boxes.add(box5);
-        boxes.add(box6);
 
         for(int i=0;i<boxes.size();i++){
             boxes.get(i).setVisible(false);
         }
+        marker.setVisible(false);
     }
 
     public void red(ActionEvent actionEvent){
@@ -138,9 +140,10 @@ public class RouletteController {
         tick = (int)(Math.random()*101);
         boxIndex = -1;
         wheelIndex = -1;
+        delay = 0;
 
 
-        for(int i=0;i<6;i++){
+        for(int i=0;i<5;i++){
             boxIndex++;
             wheelIndex++;
             if(wheel.get(wheelIndex).equals("black")) {
@@ -155,43 +158,47 @@ public class RouletteController {
         for(int i=0;i<boxes.size();i++){
             boxes.get(i).setVisible(true);
         }
+        marker.setVisible(true);
 
         boxIndex = 0;
 
         AnimationTimer game = new AnimationTimer() {
 
             public void handle(long now) {
-                if(wheel.get(wheelIndex).equals("black")) {
-                    boxes.get(boxIndex).setFill(Color.BLACK);
-                    if(boxIndex==0){
-                        box1id = "black";
+                for(int i=0;i<5;i++){
+                    if(i==0){
+                        if(wheel.get(wheelIndex).equals("black")){
+                            box1id = "black";
+                        } else if(wheel.get(wheelIndex).equals("red")){
+                            box1id = "red";
+                        } else {
+                            box1id = "green";
+                        }
                     }
-                } else if (wheel.get(wheelIndex).equals("red")){
-                    boxes.get(boxIndex).setFill(Color.RED);
-                    if(boxIndex==0){
-                        box1id = "black";
+
+                    if(wheel.get(wheelIndex).equals("black")){
+                        boxes.get(i).setFill(Color.BLACK);
+                    } else if(wheel.get(wheelIndex).equals("red")){
+                        boxes.get(i).setFill(Color.RED);
+                    } else {
+                        boxes.get(i).setFill(Color.GREEN);
                     }
-                } else {
-                    boxes.get(boxIndex).setFill(Color.GREEN);
-                    if(boxIndex==0){
-                        box1id = "black";
+
+                    wheelIndex++;
+                    if(wheelIndex>15){
+                        wheelIndex = 0;
                     }
                 }
-                tick++;
 
-                if(tick==200){
+                while(delay<1000000000){
+                    delay++;
+                }
+                delay = 0;
+
+                tick++;
+                if(tick==100){
                     checkResult(box1id);
                     this.stop();
-                }
-
-                boxIndex++;
-                if(boxIndex>5){
-                    boxIndex = 0;
-                }
-
-                wheelIndex++;
-                if(wheelIndex>14){
-                    wheelIndex = 0;
                 }
             }
         };

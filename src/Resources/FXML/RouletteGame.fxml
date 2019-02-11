@@ -30,6 +30,5 @@
    <Rectangle fx:id="box3" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="260.0" layoutY="348.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
    <Rectangle fx:id="box4" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="330.0" layoutY="348.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
    <Rectangle fx:id="box5" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="400.0" layoutY="348.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
-   <Rectangle fx:id="box6" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="470.0" layoutY="348.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="79.0" layoutX="146.0" layoutY="309.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
+   <Rectangle fx:id="marker" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="79.0" layoutX="146.0" layoutY="309.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
 </Pane>

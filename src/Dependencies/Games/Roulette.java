@@ -20,7 +20,7 @@ public class Roulette extends GamblingGame {
         this.player = user;
     }
     public void placeBet(int betAmount, User player){
-        userManager.updatePlayerBalance(player, -(betAmount));
+        userManager.updatePlayerBalance(player, player.getBalance()-(betAmount));
     }
 
     public static ArrayList<String> generateWheel(){
@@ -37,7 +37,7 @@ public class Roulette extends GamblingGame {
     }
 
     public void updateWinnerBalance(User player, int winAMount){
-            userManager.updatePlayerBalance(player, winAMount);
+            userManager.updatePlayerBalance(player, player.getBalance()+winAMount);
     }
 
 
